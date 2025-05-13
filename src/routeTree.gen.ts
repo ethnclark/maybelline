@@ -14,6 +14,7 @@ import { Route as rootRoute } from "./routes/__root";
 import { Route as IndexImport } from "./routes/index";
 import { Route as ProductIndexImport } from "./routes/product/index";
 import { Route as ProductProductIdImport } from "./routes/product/$productId";
+import { Route as AboutUsImport } from "./routes/about-us/index";
 
 // Create/Update Routes
 const IndexRoute = IndexImport.update({
@@ -31,6 +32,12 @@ const ProductIndexRoute = ProductIndexImport.update({
 const ProductProductIdRoute = ProductProductIdImport.update({
   id: "/product/$productId",
   path: "/product/$productId",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const AboutUsRoute = AboutUsImport.update({
+  id: "/about-us",
+  path: "/about-us",
   getParentRoute: () => rootRoute,
 } as any);
 
@@ -59,6 +66,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ProductProductIdImport;
       parentRoute: typeof rootRoute;
     };
+    "/about-us": {
+      id: "/about-us";
+      path: "/about-us";
+      fullPath: "/about-us";
+      preLoaderRoute: typeof AboutUsImport;
+      parentRoute: typeof rootRoute;
+    };
   }
 }
 
@@ -68,12 +82,14 @@ export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
   "/product": typeof ProductIndexRoute;
   "/product/$productId": typeof ProductProductIdRoute;
+  "/about-us": typeof AboutUsRoute;
 }
 
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
   "/product": typeof ProductIndexRoute;
   "/product/$productId": typeof ProductProductIdRoute;
+  "/about-us": typeof AboutUsRoute;
 }
 
 export interface FileRoutesById {
@@ -81,6 +97,7 @@ export interface FileRoutesById {
   "/": typeof IndexRoute;
   "/product": typeof ProductIndexRoute;
   "/product/$productId": typeof ProductProductIdRoute;
+  "/about-us": typeof AboutUsRoute;
 }
 
 export interface FileRouteTypes {
@@ -88,14 +105,16 @@ export interface FileRouteTypes {
   fullPaths:
     | "/"
     | "/product"
-    | "/product/$productId";
+    | "/product/$productId"
+    | "/about-us";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/product" | "/product/$productId";
+  to: "/" | "/product" | "/product/$productId" | "/about-us";
   id:
     | "__root__"
     | "/"
     | "/product"
-    | "/product/$productId";
+    | "/product/$productId"
+    | "/about-us";
   fileRoutesById: FileRoutesById;
 }
 
@@ -109,6 +128,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ProductIndexRoute: ProductIndexRoute,
   ProductProductIdRoute: ProductProductIdRoute,
+  AboutUsRoute: AboutUsRoute,
 };
 
 export const routeTree = rootRoute
@@ -123,7 +143,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/product/",
-        "/product/$productId"
+        "/product/$productId",
+        "/about-us"
       ]
     },
     "/": {
@@ -134,6 +155,9 @@ export const routeTree = rootRoute
     },
     "/product/$productId": {
       "filePath": "product/$productId.tsx"
+    },
+    "/about-us": {
+      "filePath": "about-us/index.tsx"
     }
   }
 }
